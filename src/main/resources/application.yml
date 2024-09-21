@@ -4,8 +4,8 @@ spring:
   jackson:
     property-naming-strategy: SNAKE_CASE
   flyway:
-    locations: classpath:/db/migration
-    schemas: employees
+    locations: classpath:/db/migration/postgresql
+    schemas: migrations
     baselineOnMigrate: true
     enabled: true
   datasource:
