@@ -1,6 +1,6 @@
 package cr.go.mep.gradingsystem.model;
 
-import cr.go.mep.gradingsystem.enums.AssistanceStatus;
+import cr.go.mep.gradingsystem.enums.AttendanceStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +22,7 @@ public class AttendanceStudent extends Auditable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private AssistanceStatus status;
+    private AttendanceStatus status;
 
     @NotBlank
     @Column(columnDefinition = "TEXT")
@@ -39,7 +39,7 @@ public class AttendanceStudent extends Auditable {
     private Attendance attendance;
 
 
-    public AttendanceStudent(AssistanceStatus status,
+    public AttendanceStudent(AttendanceStatus status,
                              String justification,
                              Student student,
                              Attendance attendance) {

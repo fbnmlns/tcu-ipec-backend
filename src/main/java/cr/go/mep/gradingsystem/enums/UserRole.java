@@ -1,6 +1,6 @@
 package cr.go.mep.gradingsystem.enums;
 
-public enum Role {
+public enum UserRole {
     ADMINISTRATOR,
     INSTRUCTOR,
     STUDENT
