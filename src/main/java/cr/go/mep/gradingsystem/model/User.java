@@ -9,6 +9,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,6 +35,10 @@ public class User extends Auditable {
     @Email
     private String email;
 
+    @NotNull
+    @Column(unique=true)
+    private String username;
+
     private String password;
 
     @NotNull
@@ -40,11 +49,13 @@ public class User extends Auditable {
     public User(String name,
                 String lastName,
                 String email,
+                String username,
                 String password,
                 UserRole role) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
+        this.username = username;
         this.password = password;
         this.role = role;
     }
