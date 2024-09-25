@@ -1,6 +1,6 @@
 package cr.go.mep.gradingsystem.model;
 
-import cr.go.mep.gradingsystem.enums.Role;
+import cr.go.mep.gradingsystem.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -34,14 +34,14 @@ public class User extends Auditable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole role;
 
 
     public User(String name,
                 String lastName,
                 String email,
                 String password,
-                Role role) {
+                UserRole role) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;

@@ -1,6 +1,6 @@
 package cr.go.mep.gradingsystem.enums;
 
-public enum AssistanceStatus {
+public enum AttendanceStatus {
     PRESENT,
     ABSENT,
     LATE,
