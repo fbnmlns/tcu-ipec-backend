@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "achievement_levels")
+@Table(name = "achievement_levels", schema = "institution")
 public class AchievementLevel extends BaseEntity {
     @NotBlank
     private String name;

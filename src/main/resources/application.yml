@@ -1,11 +1,9 @@
 spring:
   application:
     name: springboot
-  jackson:
-    property-naming-strategy: SNAKE_CASE
   flyway:
     locations: classpath:/db/migration/postgresql
-    schemas: migrations
+    schemas: institution
     baselineOnMigrate: true
     enabled: true
   datasource:
@@ -13,3 +11,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: pez
+  security:
+    jwt:
+      token:
+        secret-key: "633e77f1fd802aa153209d405ab76b8d5f900e7354c3a220a8941263b0a5fc3b"

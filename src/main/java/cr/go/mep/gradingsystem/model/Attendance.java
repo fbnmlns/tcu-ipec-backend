@@ -16,7 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "attendances")
+@Table(name = "attendances", schema = "institution")
 public class Attendance extends Auditable {
     @Id
     @Setter(AccessLevel.PROTECTED)
