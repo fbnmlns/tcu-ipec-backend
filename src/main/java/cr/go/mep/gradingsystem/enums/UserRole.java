@@ -8,9 +8,9 @@ public enum UserRole {
     INSTRUCTOR("instructor"),
     STUDENT("student");
 
-    private final String role;
+    private final String value;
 
-    UserRole(String role) {
-        this.role = role;
+    UserRole(String value) {
+        this.value = value;
     }
 }
