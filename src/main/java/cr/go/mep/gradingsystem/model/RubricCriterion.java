@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "rubric_criterion")
+@Table(name = "rubric_criterion", schema = "institution")
 public class RubricCriterion extends BaseEntity {
     @NotBlank
     @Setter(AccessLevel.PROTECTED)

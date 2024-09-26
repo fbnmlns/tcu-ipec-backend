@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "attendance_students")
+@Table(name = "attendance_students", schema = "institution")
 public class AttendanceStudent extends Auditable {
     @Id
     @Setter(AccessLevel.PROTECTED)

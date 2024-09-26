@@ -1,10 +1,14 @@
 package cr.go.mep.gradingsystem.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Student extends User {
-    @NotNull
+    @ColumnDefault("false")
     private boolean hasCurricularAdaptation;
 
     @NotNull

@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "assessment_students")
+@Table(name = "assessment_students", schema = "institution")
 public class AssessmentStudent extends Auditable {
     @Id
     @Setter(AccessLevel.PROTECTED)

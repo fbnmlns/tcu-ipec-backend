@@ -19,7 +19,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Instructor extends User {
     @NotNull
-    @Setter(AccessLevel.PROTECTED)
     @OneToMany(
             mappedBy = "instructor",
             cascade = CascadeType.ALL)

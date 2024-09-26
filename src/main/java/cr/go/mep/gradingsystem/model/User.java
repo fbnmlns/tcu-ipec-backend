@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,8 +16,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
-public class User extends Auditable {
+@Table(name = "users", schema = "institution")
+public class User extends Auditable implements UserDetails {
     @Id
     @Setter(AccessLevel.PROTECTED)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +27,10 @@ public class User extends Auditable {
     private String name;
 
     @NotBlank
+    @Column(unique=true)
     private String lastName;
 
+    @NotBlank
     @Email
     private String email;
 
@@ -39,6 +38,7 @@ public class User extends Auditable {
     @Column(unique=true)
     private String username;
 
+    @NotNull
     private String password;
 
     @NotNull
@@ -58,5 +58,30 @@ public class User extends Auditable {
         this.username = username;
         this.password = password;
         this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 }
