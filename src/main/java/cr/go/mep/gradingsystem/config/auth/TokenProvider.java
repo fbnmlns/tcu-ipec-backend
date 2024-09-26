@@ -22,7 +22,12 @@ public class TokenProvider {
             Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET);
             return JWT.create()
                     .withSubject(user.getUsername())
-                    .withClaim("user", user.getUsername())
+                    .withClaim("id", user.getId())
+                    .withClaim("name", user.getName())
+                    .withClaim("lastName", user.getLastName())
+                    .withClaim("email", user.getEmail())
+                    .withClaim("username", user.getUsername())
+                    .withClaim("role", user.getRole().getValue())
                     .withExpiresAt(generateAccessExpirationDate())
                     .sign(algorithm);
 
