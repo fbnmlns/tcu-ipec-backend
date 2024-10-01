@@ -29,6 +29,7 @@ public class AuthConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/courses").hasRole("ADMINISTRATOR")
                         .anyRequest().authenticated())
                 .addFilterBefore(this.securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
