@@ -1,12 +1,8 @@
 package cr.go.mep.gradingsystem.model;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -15,8 +11,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
+@DiscriminatorValue("STUDENT")
 public class Student extends User {
     @ColumnDefault("false")
     private boolean hasCurricularAdaptation;
@@ -38,8 +34,8 @@ public class Student extends User {
     private List<AttendanceStudent> attendanceStudents;
 
 
-    public Student(boolean hasCurricularAdaptation) {
-        this.hasCurricularAdaptation = hasCurricularAdaptation;
+    public Student() {
+        this.hasCurricularAdaptation = false;
         this.courses = new ArrayList<>();
         this.assessments = new ArrayList<>();
         this.attendanceStudents = new ArrayList<>();
