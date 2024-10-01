@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -62,6 +63,18 @@ public class User extends Auditable implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UserRole.ADMINISTRATOR) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));
+        }
+
+        if (this.role == UserRole.INSTRUCTOR) {
+            return List.of(new SimpleGrantedAuthority("ROLE_INSTRUCTOR"));
+        }
+
+        if (this.role == UserRole.STUDENT) {
+            return List.of(new SimpleGrantedAuthority("ROLE_STUDENT"));
+        }
+
         return List.of();
     }
 
