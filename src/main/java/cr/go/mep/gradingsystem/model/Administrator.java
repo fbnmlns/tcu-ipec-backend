@@ -1,5 +1,6 @@
 package cr.go.mep.gradingsystem.model;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,5 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
+@DiscriminatorValue("ADMINISTRATOR")
 public class Administrator extends User {
 }

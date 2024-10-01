@@ -1,7 +1,11 @@
 package cr.go.mep.gradingsystem.service;
 
 import cr.go.mep.gradingsystem.dto.SignUpRequest;
+import cr.go.mep.gradingsystem.enums.UserRole;
 import cr.go.mep.gradingsystem.exception.InvalidJwtException;
+import cr.go.mep.gradingsystem.model.Administrator;
+import cr.go.mep.gradingsystem.model.Instructor;
+import cr.go.mep.gradingsystem.model.Student;
 import cr.go.mep.gradingsystem.model.User;
 import cr.go.mep.gradingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,15 +32,32 @@ public class AuthService implements UserDetailsService {
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(signUpRequest.password());
 
-        User newUser = new User(
-                signUpRequest.name(),
-                signUpRequest.lastName(),
-                signUpRequest.email(),
-                signUpRequest.username(),
-                encryptedPassword,
-                signUpRequest.role());
+        User newUser = getUserByRoleType(signUpRequest.role());
+
+        newUser.setName(signUpRequest.name());
+        newUser.setLastName(signUpRequest.lastName());
+        newUser.setEmail(signUpRequest.email());
+        newUser.setUsername(signUpRequest.username());
+        newUser.setPassword(encryptedPassword);
+        newUser.setRole(signUpRequest.role());
 
         return this.userRepository.save(newUser);
+    }
+
+    private User getUserByRoleType(UserRole role) {
+        if (role == UserRole.ADMINISTRATOR) {
+            return new Administrator();
+        }
+
+        if (role == UserRole.INSTRUCTOR) {
+            return new Instructor();
+        }
+
+        if (role == UserRole.STUDENT) {
+            return new Student();
+        }
+
+        return new User();
     }
 }
 
