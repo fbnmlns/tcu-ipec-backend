@@ -18,7 +18,9 @@ public class Student extends User {
     private boolean hasCurricularAdaptation;
 
     @NotNull
-    @ManyToMany(mappedBy = "students", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(
+            mappedBy = "students",
+            cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
     private List<Course> courses;
 
     @NotNull

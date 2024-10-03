@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,5 +39,9 @@ public class CourseService {
                     createCourseRequest.instructorId(),
                     "resource does not exist");
         }
+    }
+
+    public List<Course> getAllCourses() {
+        return this.courseRepository.findAll();
     }
 }
