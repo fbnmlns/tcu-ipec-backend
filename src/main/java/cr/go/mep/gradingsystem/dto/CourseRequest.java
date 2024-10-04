@@ -4,7 +4,7 @@ import cr.go.mep.gradingsystem.enums.CourseType;
 
 import java.time.LocalDateTime;
 
-public record CreateCourseRequest(
+public record CourseRequest(
         CourseType type,
         String name,
         Long instructorId,
