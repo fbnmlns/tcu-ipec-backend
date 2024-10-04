@@ -1,10 +1,8 @@
 package cr.go.mep.gradingsystem.controller;
 
-import cr.go.mep.gradingsystem.dto.AdminCourseListInstructorResponse;
-import cr.go.mep.gradingsystem.dto.AdminCourseListResponse;
-import cr.go.mep.gradingsystem.dto.CourseRequest;
-import cr.go.mep.gradingsystem.dto.InstructorCourseListResponse;
+import cr.go.mep.gradingsystem.dto.*;
 import cr.go.mep.gradingsystem.model.Course;
+import cr.go.mep.gradingsystem.model.Student;
 import cr.go.mep.gradingsystem.service.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -70,24 +68,39 @@ public class CourseController {
         return ResponseEntity.ok(instructorCourseListResponses);
     }
 
-    @PutMapping("/{courseId}/students")
-    public ResponseEntity<?> addStudentToCourse(@PathVariable Long courseId,
-                                                @RequestBody @Valid List<Long> studentIds) {
-        Long updatedCourseId = this.courseService.addStudentsToCourse(courseId, studentIds);
-
-        if (updatedCourseId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
-        return ResponseEntity.ok(updatedCourseId);
-    }
-
     @PutMapping("/{courseId}")
     public ResponseEntity<?> updateCourse(@PathVariable Long courseId,
                                           @RequestBody @Valid CourseRequest courseRequest) {
         Long updatedCourseId = this.courseService.updateCourse(courseId, courseRequest);
 
         if (courseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(updatedCourseId);
+    }
+
+    @GetMapping("/{courseId}/available-students")
+    public ResponseEntity<List<CourseStudentResponse>> getAvailableStudentsForCourse(@PathVariable Long courseId) {
+        List<Student> students = this.courseService.getAllAvailableStudentsForCourse(courseId);
+
+        List<CourseStudentResponse> courseStudentResponses = students.stream()
+                .map(student -> new CourseStudentResponse(
+                        student.getId(),
+                        student.getName(),
+                        student.getLastName(),
+                        student.getEmail()))
+                .toList();
+
+        return ResponseEntity.ok(courseStudentResponses);
+    }
+
+    @PostMapping("/{courseId}/students")
+    public ResponseEntity<?> addStudentToCourse(@PathVariable Long courseId,
+                                                @RequestBody @Valid Long studentId) {
+        Long updatedCourseId = this.courseService.addStudentToCourse(courseId, studentId);
+
+        if (updatedCourseId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

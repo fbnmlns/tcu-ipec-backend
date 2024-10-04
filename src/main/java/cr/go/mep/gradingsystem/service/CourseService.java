@@ -46,19 +46,6 @@ public class CourseService {
         return this.courseRepository.findAllByInstructorId(instructorId);
     }
 
-    public Long addStudentsToCourse(Long courseId, List<Long> studentIds) {
-        Course course = this.courseRepository.findById(courseId)
-                .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
-                        "course id",
-                        courseId,
-                        "resource does not exist"));
-
-        List<Student> students = this.studentRepository.findAllById(studentIds);
-        course.getStudents().addAll(students);
-
-        return this.courseRepository.save(course).getId();
-    }
-
     public Long updateCourse(Long courseId, CourseRequest courseRequest) {
         Course course = this.courseRepository.findById(courseId)
                 .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
@@ -81,5 +68,33 @@ public class CourseService {
         course.setMaxCapacity(courseRequest.maxCapacity());
 
         return this.courseRepository.save(course).getId();
+    }
+
+    public Long addStudentToCourse(Long courseId, Long studentId) {
+        Course course = this.courseRepository.findById(courseId)
+                .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
+                        "course id",
+                        courseId,
+                        "resource does not exist"));
+
+        Student student = this.studentRepository.findById(studentId)
+                .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
+                        "student id",
+                        studentId,
+                        "resource does not exist"));
+
+        course.getStudents().add(student);
+
+        return this.courseRepository.save(course).getId();
+    }
+
+    public List<Student> getAllAvailableStudentsForCourse(Long courseId) {
+        Course course = this.courseRepository.findById(courseId)
+                .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
+                        "course id",
+                        courseId,
+                        "resource does not exist"));
+
+        return this.studentRepository.findStudentsNotInCourse(course);
     }
 }
