@@ -23,7 +23,7 @@ public class AuthConfig {
     private final SecurityFilter securityFilter;
 
     @Bean
-    SecurityFilterChain SecurityFilterChain (HttpSecurity httpSecurity) throws Exception {
+    SecurityFilterChain SecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -32,6 +32,7 @@ public class AuthConfig {
                         .requestMatchers(HttpMethod.POST, "/courses").hasRole("ADMINISTRATOR")
                         .requestMatchers(HttpMethod.GET, "/courses/admin").hasRole("ADMINISTRATOR")
                         .requestMatchers(HttpMethod.GET, "/courses/instructor").hasRole("INSTRUCTOR")
+                        .requestMatchers(HttpMethod.PUT, "/{courseId}/students").hasRole("ADMINISTRATOR")
                         .anyRequest().authenticated())
                 .addFilterBefore(this.securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

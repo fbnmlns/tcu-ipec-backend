@@ -69,4 +69,16 @@ public class CourseController {
 
         return ResponseEntity.ok(instructorCourseListResponses);
     }
+
+    @PutMapping("/{courseId}/students")
+    public ResponseEntity<?> addStudentToCourse(@PathVariable Long courseId, @RequestBody @Valid List<Long> studentIds) {
+        Long updatedCourseId = this.courseService.addStudentsToCourse(courseId, studentIds);
+
+        if (updatedCourseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(updatedCourseId);
+    }
+
 }
