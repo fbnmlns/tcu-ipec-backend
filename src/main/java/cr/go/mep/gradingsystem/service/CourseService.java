@@ -1,6 +1,6 @@
 package cr.go.mep.gradingsystem.service;
 
-import cr.go.mep.gradingsystem.dto.CreateCourseRequest;
+import cr.go.mep.gradingsystem.dto.CourseRequest;
 import cr.go.mep.gradingsystem.model.Course;
 import cr.go.mep.gradingsystem.model.Instructor;
 import cr.go.mep.gradingsystem.model.Student;
@@ -20,20 +20,20 @@ public class CourseService {
     private final InstructorRepository instructorRepository;
     private final StudentRepository studentRepository;
 
-    public Long createCourse(CreateCourseRequest createCourseRequest) {
-        Instructor instructor = this.instructorRepository.findById(createCourseRequest.instructorId())
+    public Long createCourse(CourseRequest courseRequest) {
+        Instructor instructor = this.instructorRepository.findById(courseRequest.instructorId())
                 .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
                         "instructor id",
-                        createCourseRequest.instructorId(),
+                        courseRequest.instructorId(),
                         "resource does not exist"));
 
         Course newCourse = new Course(
-                createCourseRequest.type(),
-                createCourseRequest.name(),
+                courseRequest.type(),
+                courseRequest.name(),
                 instructor,
-                createCourseRequest.startDate(),
-                createCourseRequest.endDate(),
-                createCourseRequest.maxCapacity());
+                courseRequest.startDate(),
+                courseRequest.endDate(),
+                courseRequest.maxCapacity());
 
         return this.courseRepository.save(newCourse).getId();
     }
@@ -55,6 +55,30 @@ public class CourseService {
 
         List<Student> students = this.studentRepository.findAllById(studentIds);
         course.getStudents().addAll(students);
+
+        return this.courseRepository.save(course).getId();
+    }
+
+    public Long updateCourse(Long courseId, CourseRequest courseRequest) {
+        Course course = this.courseRepository.findById(courseId)
+                .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
+                        "course id",
+                        courseId,
+                        "resource does not exist"));
+
+        Instructor instructor = this.instructorRepository.findById(courseRequest.instructorId())
+                .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
+                        "instructor id",
+                        courseRequest.instructorId(),
+                        "resource does not exist"));
+
+
+        course.setType(courseRequest.type());
+        course.setName(courseRequest.name());
+        course.setInstructor(instructor);
+        course.setStartDate(courseRequest.startDate());
+        course.setEndDate(courseRequest.endDate());
+        course.setMaxCapacity(courseRequest.maxCapacity());
 
         return this.courseRepository.save(course).getId();
     }

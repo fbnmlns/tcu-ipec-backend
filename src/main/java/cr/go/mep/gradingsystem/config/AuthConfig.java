@@ -33,6 +33,7 @@ public class AuthConfig {
                         .requestMatchers(HttpMethod.GET, "/courses/admin").hasRole("ADMINISTRATOR")
                         .requestMatchers(HttpMethod.GET, "/courses/instructor").hasRole("INSTRUCTOR")
                         .requestMatchers(HttpMethod.PUT, "/{courseId}/students").hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.PUT, "/{courseId}").hasRole("ADMINISTRATOR")
                         .anyRequest().authenticated())
                 .addFilterBefore(this.securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

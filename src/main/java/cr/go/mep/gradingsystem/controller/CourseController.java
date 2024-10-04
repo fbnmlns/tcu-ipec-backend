@@ -2,7 +2,7 @@ package cr.go.mep.gradingsystem.controller;
 
 import cr.go.mep.gradingsystem.dto.AdminCourseListInstructorResponse;
 import cr.go.mep.gradingsystem.dto.AdminCourseListResponse;
-import cr.go.mep.gradingsystem.dto.CreateCourseRequest;
+import cr.go.mep.gradingsystem.dto.CourseRequest;
 import cr.go.mep.gradingsystem.dto.InstructorCourseListResponse;
 import cr.go.mep.gradingsystem.model.Course;
 import cr.go.mep.gradingsystem.service.CourseService;
@@ -21,8 +21,8 @@ public class CourseController {
     private final CourseService courseService;
 
     @PostMapping
-    public ResponseEntity<?> createCourse(@RequestBody @Valid CreateCourseRequest createCourseRequest) {
-        Long courseId = this.courseService.createCourse(createCourseRequest);
+    public ResponseEntity<?> createCourse(@RequestBody @Valid CourseRequest courseRequest) {
+        Long courseId = this.courseService.createCourse(courseRequest);
 
         if (courseId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -71,10 +71,23 @@ public class CourseController {
     }
 
     @PutMapping("/{courseId}/students")
-    public ResponseEntity<?> addStudentToCourse(@PathVariable Long courseId, @RequestBody @Valid List<Long> studentIds) {
+    public ResponseEntity<?> addStudentToCourse(@PathVariable Long courseId,
+                                                @RequestBody @Valid List<Long> studentIds) {
         Long updatedCourseId = this.courseService.addStudentsToCourse(courseId, studentIds);
 
         if (updatedCourseId == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return ResponseEntity.ok(updatedCourseId);
+    }
+
+    @PutMapping("/{courseId}")
+    public ResponseEntity<?> updateCourse(@PathVariable Long courseId,
+                                          @RequestBody @Valid CourseRequest courseRequest) {
+        Long updatedCourseId = this.courseService.updateCourse(courseId, courseRequest);
+
+        if (courseId == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
