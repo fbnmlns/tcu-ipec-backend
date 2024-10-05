@@ -1,4 +1,4 @@
-package cr.go.mep.gradingsystem.controller;
+package cr.go.mep.gradingsystem.controller.course;
 
 import cr.go.mep.gradingsystem.dto.*;
 import cr.go.mep.gradingsystem.model.Course;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("admin/courses")
 @RequiredArgsConstructor
-public class CourseController {
+public class AdminCourseController {
     private final CourseService courseService;
 
     @PostMapping
@@ -50,7 +50,7 @@ public class CourseController {
         return ResponseEntity.ok(courseResponse);
     }
 
-    @GetMapping("/admin")
+    @GetMapping
     public ResponseEntity<List<AdminCourseListResponse>> getAdminCourses() {
         List<Course> courses = this.courseService.getAllCourses();
 
@@ -70,21 +70,6 @@ public class CourseController {
                 .toList();
 
         return ResponseEntity.ok(adminCourseListResponses);
-    }
-
-    @GetMapping("/instructor")
-    public ResponseEntity<List<InstructorCourseListResponse>> getInstructorCourses(
-            @RequestBody @Valid Long instructorId) {
-        List<Course> courses = this.courseService.getAllCoursesByInstructorId(instructorId);
-
-        List<InstructorCourseListResponse> instructorCourseListResponses = courses.stream()
-                .map(course -> new InstructorCourseListResponse(
-                        course.getId(),
-                        course.getType(),
-                        course.getName()))
-                .toList();
-
-        return ResponseEntity.ok(instructorCourseListResponses);
     }
 
     @PutMapping("/{courseId}")
