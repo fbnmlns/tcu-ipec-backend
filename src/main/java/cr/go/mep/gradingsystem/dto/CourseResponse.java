@@ -4,13 +4,12 @@ import cr.go.mep.gradingsystem.enums.CourseType;
 
 import java.time.LocalDateTime;
 
-public record AdminCourseListResponse(
+public record CourseResponse(
         Long courseId,
         CourseType type,
         String name,
         CourseInstructorResponse instructor,
         LocalDateTime startDate,
         LocalDateTime endDate,
-        int numberOfRegisteredStudents,
         int maxCapacity
 ) {}

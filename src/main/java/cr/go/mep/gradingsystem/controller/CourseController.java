@@ -31,6 +31,25 @@ public class CourseController {
                 .body(courseId);
     }
 
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseResponse> getCourseById(@PathVariable Long courseId) {
+        Course course = this.courseService.getCourseById(courseId);
+
+        CourseResponse courseResponse = new CourseResponse(
+                course.getId(),
+                course.getType(),
+                course.getName(),
+                new CourseInstructorResponse(
+                        course.getInstructor().getId(),
+                        course.getInstructor().getName(),
+                        course.getInstructor().getLastName()),
+                course.getStartDate(),
+                course.getEndDate(),
+                course.getMaxCapacity());
+
+        return ResponseEntity.ok(courseResponse);
+    }
+
     @GetMapping("/admin")
     public ResponseEntity<List<AdminCourseListResponse>> getAdminCourses() {
         List<Course> courses = this.courseService.getAllCourses();
@@ -40,7 +59,7 @@ public class CourseController {
                         course.getId(),
                         course.getType(),
                         course.getName(),
-                        new AdminCourseListInstructorResponse(
+                        new CourseInstructorResponse(
                                 course.getInstructor().getId(),
                                 course.getInstructor().getName(),
                                 course.getInstructor().getLastName()),

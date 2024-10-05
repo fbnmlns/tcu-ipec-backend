@@ -30,11 +30,12 @@ public class AuthConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/courses").hasRole("ADMINISTRATOR")
-                        .requestMatchers(HttpMethod.POST, "/{courseId}/students").hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.POST, "courses/{courseId}/students").hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.GET, "courses/{courseId}").hasRole("ADMINISTRATOR")
                         .requestMatchers(HttpMethod.GET, "/courses/admin").hasRole("ADMINISTRATOR")
-                        .requestMatchers(HttpMethod.GET, "/{courseId}/available-students").hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.GET, "courses/{courseId}/available-students").hasRole("ADMINISTRATOR")
                         .requestMatchers(HttpMethod.GET, "/courses/instructor").hasRole("INSTRUCTOR")
-                        .requestMatchers(HttpMethod.PUT, "/{courseId}").hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.PUT, "courses/{courseId}").hasRole("ADMINISTRATOR")
                         .anyRequest().authenticated())
                 .addFilterBefore(this.securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

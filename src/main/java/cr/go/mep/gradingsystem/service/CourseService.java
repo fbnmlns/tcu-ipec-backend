@@ -38,6 +38,14 @@ public class CourseService {
         return this.courseRepository.save(newCourse).getId();
     }
 
+    public Course getCourseById(Long courseId) {
+        return this.courseRepository.findById(courseId)
+                .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
+                        "course id",
+                        courseId,
+                        "resource does not exist"));
+    }
+
     public List<Course> getAllCourses() {
         return this.courseRepository.findAll();
     }
