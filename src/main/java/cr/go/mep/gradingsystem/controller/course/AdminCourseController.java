@@ -1,4 +1,4 @@
-package cr.go.mep.gradingsystem.controller;
+package cr.go.mep.gradingsystem.controller.course;
 
 import cr.go.mep.gradingsystem.dto.*;
 import cr.go.mep.gradingsystem.model.Course;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("admin/courses")
 @RequiredArgsConstructor
-public class CourseController {
+public class AdminCourseController {
     private final CourseService courseService;
 
     @PostMapping
@@ -31,7 +31,26 @@ public class CourseController {
                 .body(courseId);
     }
 
-    @GetMapping("/admin")
+    @GetMapping("/{courseId}")
+    public ResponseEntity<CourseResponse> getCourseById(@PathVariable Long courseId) {
+        Course course = this.courseService.getCourseById(courseId);
+
+        CourseResponse courseResponse = new CourseResponse(
+                course.getId(),
+                course.getType(),
+                course.getName(),
+                new CourseInstructorResponse(
+                        course.getInstructor().getId(),
+                        course.getInstructor().getName(),
+                        course.getInstructor().getLastName()),
+                course.getStartDate(),
+                course.getEndDate(),
+                course.getMaxCapacity());
+
+        return ResponseEntity.ok(courseResponse);
+    }
+
+    @GetMapping
     public ResponseEntity<List<AdminCourseListResponse>> getAdminCourses() {
         List<Course> courses = this.courseService.getAllCourses();
 
@@ -40,7 +59,7 @@ public class CourseController {
                         course.getId(),
                         course.getType(),
                         course.getName(),
-                        new AdminCourseListInstructorResponse(
+                        new CourseInstructorResponse(
                                 course.getInstructor().getId(),
                                 course.getInstructor().getName(),
                                 course.getInstructor().getLastName()),
@@ -51,21 +70,6 @@ public class CourseController {
                 .toList();
 
         return ResponseEntity.ok(adminCourseListResponses);
-    }
-
-    @GetMapping("/instructor")
-    public ResponseEntity<List<InstructorCourseListResponse>> getInstructorCourses(
-            @RequestBody @Valid Long instructorId) {
-        List<Course> courses = this.courseService.getAllCoursesByInstructorId(instructorId);
-
-        List<InstructorCourseListResponse> instructorCourseListResponses = courses.stream()
-                .map(course -> new InstructorCourseListResponse(
-                        course.getId(),
-                        course.getType(),
-                        course.getName()))
-                .toList();
-
-        return ResponseEntity.ok(instructorCourseListResponses);
     }
 
     @PutMapping("/{courseId}")
