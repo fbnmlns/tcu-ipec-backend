@@ -23,7 +23,7 @@ public class AdminCourseController {
         Long courseId = this.courseService.createCourse(courseRequest);
 
         if (courseId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         return ResponseEntity
@@ -78,7 +78,9 @@ public class AdminCourseController {
         Long updatedCourseId = this.courseService.updateCourse(courseId, courseRequest);
 
         if (courseId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
         }
 
         return ResponseEntity.ok(updatedCourseId);
@@ -105,9 +107,20 @@ public class AdminCourseController {
         Long updatedCourseId = this.courseService.addStudentToCourse(courseId, studentId);
 
         if (updatedCourseId == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
         }
 
         return ResponseEntity.ok(updatedCourseId);
+    }
+
+    @DeleteMapping("/{courseId}/students")
+    public ResponseEntity<?> deleteStudentFromCourse(@PathVariable Long courseId,
+                                                     @RequestBody @Valid Long studentId) {
+        Long updatedCourseId = this.courseService.deleteStudentFromCourse(courseId, studentId);
+
+        return ResponseEntity
+                .ok("Deleted student with id " + studentId + " from course with id " + updatedCourseId);
     }
 }

@@ -105,4 +105,22 @@ public class CourseService {
 
         return this.studentRepository.findStudentsNotInCourse(course);
     }
+
+    public Long deleteStudentFromCourse(Long courseId, Long studentId) {
+        Course course = this.courseRepository.findById(courseId)
+                .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
+                        "course id",
+                        courseId,
+                        "resource does not exist"));
+
+        Student student = this.studentRepository.findById(studentId)
+                .orElseThrow(() -> new InvalidConfigurationPropertyValueException(
+                        "student id",
+                        studentId,
+                        "resource does not exist"));
+
+        course.getStudents().remove(student);
+
+        return this.courseRepository.save(course).getId();
+    }
 }
