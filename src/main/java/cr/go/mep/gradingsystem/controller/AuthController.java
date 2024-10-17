@@ -13,13 +13,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = {"http://localhost:4200"})
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
@@ -35,15 +33,21 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@RequestBody @Valid SignInRequest signInRequest) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                signInRequest.username(),
-                signInRequest.password()
-        );
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                        signInRequest.username(),
+                        signInRequest.password()
+                );
 
-        Authentication authUser = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        try {
+            Authentication authUser = this.authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        String accessToken = this.tokenService.generateAccessToken((User) authUser.getPrincipal());
+            String accessToken = this.tokenService.generateAccessToken((User) authUser.getPrincipal());
 
-        return ResponseEntity.ok(new SignInTokenResponse(accessToken));
+            return ResponseEntity.ok(new SignInTokenResponse(accessToken));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
     }
 }
