@@ -18,7 +18,13 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.userRepository.findUserByUsername(username);
+        UserDetails user = this.userRepository.findUserByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return user;
     }
 
     public UserDetails signUp(SignUpRequest signUpRequest) {
@@ -39,4 +45,3 @@ public class AuthService implements UserDetailsService {
         return this.userRepository.save(newUser);
     }
 }
-
